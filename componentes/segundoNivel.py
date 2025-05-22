@@ -4,5 +4,5 @@ import math
 import random
 import menu
 
-def nivel1():
+def nivel2():
     a=1

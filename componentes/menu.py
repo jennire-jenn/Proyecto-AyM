@@ -2,31 +2,113 @@ import pygame
 import sys
 import math
 import random
-
-
-NEGRO = (2, 2, 2)
-VERDE = (0, 255, 0)
-BLANCO = (255, 255, 255)
-WIDTH = 640
-HEIGHT = 480
-pantalla = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Gravity Snake")
-clock = pygame.time.Clock()
+import menu
+import primerNivel
+import segundoNivel
+import tercerNivel
 
 def menu():
+    NEGRO = (2, 2, 2)
+    GRIS = (188, 188, 188)
+    BLANCO = (255, 255, 255)
+    VERDE = (0, 255, 0)
 
+    WIDTH = 640
+    HEIGHT = 480
+    pantalla = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Gravity Snake")
+
+    
+
+    fuente = pygame.font.SysFont(None, 30)
+    fuente2 = pygame.font.SysFont(None, 50)
+    boton1 = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 100, 200, 60)
+
+    
+
+    boton2 = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 , 200, 60)
+
+    boton3 = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 + 100, 200, 60)
+
+    class Vibora:
+        def __init__(self, x):
+            self.x = x
+            self.y = random.randint(-200, 0)
+            self.amp = random.randint(10, 20)
+            self.vel = random.uniform(1, 2)
+
+        def mover(self):
+            self.y += self.vel
+            if self.y > HEIGHT + 50:
+                self.y = random.randint(-200, 0)
+
+        def dibujar(self, pantalla):
+            puntos = []
+            for i in range(50):
+                y = self.y + i
+                x = self.x + math.sin((y) * 0.02) * self.amp
+                puntos.append((x, y))
+            pygame.draw.lines(pantalla, VERDE, False, puntos, 2)
+
+    viboras = []
+    for _ in range(10):
+        lado = random.choice(["izq", "der"])
+        if lado == "izq":
+            x = random.randint(0, boton1.left - 10)
+        else:
+            x = random.randint(boton1.right + 10, WIDTH)
+        viboras.append(Vibora(x))
+
+    clock = pygame.time.Clock()
     running = True
+
+
 
 
     while running:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 running = False
+                pygame.quit()
+                sys.exit()
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                if boton1.collidepoint(evento.pos):
+                    primerNivel.nivel1()
+                elif boton2.collidepoint(evento.pos):
+                    segundoNivel.nivel2()
+                elif boton3.collidepoint(evento.pos):
+                    tercerNivel.nivel3()
             
+                    
+
+
     
         pantalla.fill(NEGRO)
+
+        
+        
+
+
+       
+
+
+        
+        pygame.draw.rect(pantalla, BLANCO, boton1)
+        texto1 = fuente.render("Nivel 1", True, NEGRO)
+        pantalla.blit(texto1, texto1.get_rect(center=boton1.center))
+
+        pygame.draw.rect(pantalla, BLANCO, boton2)
+        texto2 = fuente.render("Nivel 2", True, NEGRO)
+        pantalla.blit(texto2, texto2.get_rect(center=boton2.center))
+
+        pygame.draw.rect(pantalla, BLANCO, boton3)
+        texto3 = fuente.render("Nivel 3", True, NEGRO)
+        pantalla.blit(texto3, texto3.get_rect(center=boton3.center))
+
+        texto4 = fuente2.render("Elija un nivel", True, BLANCO)
+        pantalla.blit(texto4, (WIDTH // 2 -110, HEIGHT // 2 - 180))
+
+
+
         pygame.display.flip()  
         clock.tick(60)
-
-pygame.quit()
-sys.exit()
