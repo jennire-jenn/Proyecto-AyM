@@ -1,0 +1,81 @@
+import pygame
+import sys
+import math
+import random
+
+pygame.init()
+
+NEGRO = (0, 0, 0)
+VERDE = (0, 255, 0)
+BLANCO = (255, 255, 255)
+
+
+WIDTH = 640
+HEIGHT = 480
+pantalla = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Gravity Snake")
+
+
+logo = pygame.image.load("logo.jpg")
+logo = pygame.transform.scale(logo, (300, 200))
+logo_rect = logo.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 80))
+
+fuente = pygame.font.SysFont(None, 30)
+boton = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 + 100, 200, 60)
+
+
+class Vibora:
+    def __init__(self, x):
+        self.x = x
+        self.y = random.randint(-200, 0)
+        self.amp = random.randint(10, 20)
+        self.vel = random.uniform(1, 2)
+
+    def mover(self):
+        self.y += self.vel
+        if self.y > HEIGHT + 50:
+            self.y = random.randint(-200, 0)
+
+    def dibujar(self, pantalla):
+        puntos = []
+        for i in range(50):
+            y = self.y + i
+            x = self.x + math.sin((y) * 0.02) * self.amp
+            puntos.append((x, y))
+        pygame.draw.lines(pantalla, VERDE, False, puntos, 2)
+
+viboras = []
+for _ in range(10):
+    lado = random.choice(["izq", "der"])
+    if lado == "izq":
+        x = random.randint(0, logo_rect.left - 10)
+    else:
+        x = random.randint(logo_rect.right + 10, WIDTH)
+    viboras.append(Vibora(x))
+
+clock = pygame.time.Clock()
+running = True
+
+while running:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            running = False
+
+    pantalla.fill(NEGRO)
+
+    for v in viboras:
+        v.mover()
+        v.dibujar(pantalla)
+
+    pantalla.blit(logo, logo_rect)
+
+    #boton
+    pygame.draw.rect(pantalla, BLANCO, boton)
+    texto = fuente.render("Iniciar", True, NEGRO)
+    pantalla.blit(texto, texto.get_rect(center=boton.center))
+
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()
+sys.exit()
