@@ -3,11 +3,14 @@ import sys
 import math
 import random
 import menu
+import variables
 
 def nivel1():
-    a=1
-    pygame.init()
-    screen_width, screen_height = 800, 600
+    pygame.init() 
+    cell_size = variables.cell_size
+    cell_number = variables.cell_number
+    screen_width, screen_height = variables.pantallaJuego
+    
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("GravitySnake - Nivel 1")
 
@@ -15,7 +18,6 @@ def nivel1():
     BLACK = (0, 0, 0)
     GREEN = (0, 200, 0)
 
-    block_size = 40
     level_layout = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
@@ -31,9 +33,9 @@ def nivel1():
         for row_index, row in enumerate(level_layout):
             for col_index, cell in enumerate(row):
                 if cell == 1:
-                    x = col_index * block_size
-                    y = row_index * block_size
-                    pygame.draw.rect(screen, GREEN, (x, y, block_size, block_size))
+                    x = col_index * cell_size
+                    y = row_index * cell_size
+                    pygame.draw.rect(screen, GREEN, (x, y, cell_size, cell_size))
 
     clock = pygame.time.Clock()
     running = True
