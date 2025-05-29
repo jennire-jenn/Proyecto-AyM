@@ -35,5 +35,5 @@ class Serpiente:
         for bloque in self.cuerpo:
             x_pos= int(bloque.x*cuadro)
             y_pos= int(bloque.y*cuadro)
-            bloque_rect= pygame.rect(x_pos, y_pos, cuadro, cuadro)
+            bloque_rect= pygame.Rect(x_pos, y_pos, cuadro, cuadro)
             pygame.draw.rect(pantalla,(0, 255, 0),bloque_rect)

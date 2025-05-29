@@ -4,14 +4,14 @@ import math
 import random
 import menu
 import variables
+import serpiente
 
 def nivel1():
     pygame.init() 
     cell_size = variables.cell_size
-    cell_number = variables.cell_number
     screen_width, screen_height = variables.pantallaJuego
     
-    screen = pygame.display.set_mode((screen_width, screen_height))
+    screen = pygame.display.set_mode(variables.pantallaJuego)
     pygame.display.set_caption("GravitySnake - Nivel 1")
 
     WHITE = (255, 255, 255)
@@ -35,11 +35,12 @@ def nivel1():
                 if cell == 1:
                     x = col_index * cell_size
                     y = row_index * cell_size
-                    pygame.draw.rect(screen, GREEN, (x, y, cell_size, cell_size))
+                    pygame.draw.rect(screen, BLACK, (x, y, cell_size, cell_size))
 
     clock = pygame.time.Clock()
     running = True
     while running:
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -47,6 +48,8 @@ def nivel1():
 
         screen.fill(BLACK)
         draw_level()
+        ser = serpiente.Serpiente(6,11,6,10,7,10);
+        ser.dibujar(screen)
 
         pygame.display.flip()
         clock.tick(60)
