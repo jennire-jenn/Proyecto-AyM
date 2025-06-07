@@ -3,6 +3,7 @@ import sys
 import math
 import random
 import menu
+import bbdd
 
 def login():
     pygame.init()
@@ -80,6 +81,7 @@ def login():
                         COLOR=GRIS
                         print("aaa")
                     else:
+                        bbdd.agregar(input_text)
                         menu.menu()
                     
                     

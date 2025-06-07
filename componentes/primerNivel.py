@@ -88,11 +88,45 @@ def nivel1():
 
     clock = pygame.time.Clock()
     running = True
+
+    flag= True
+
+    SCREEN_UPDATE = pygame.USEREVENT
+
+    pygame.time.set_timer(SCREEN_UPDATE,150)
+
+
     while running:
+       
+        
+        while flag:
+         serpiente_obj = serpiente.Serpiente(6, 11, 6, 10, 7, 10)
+         flag = False
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == SCREEN_UPDATE:
+                serpiente_obj.caer()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    serpiente_obj.direccion = Vector2(0,-1)
+                    serpiente_obj.mover()
+                    serpiente_obj.direccion = Vector2(0,0)
+                if event.key == pygame.K_RIGHT:
+                    serpiente_obj.direccion = Vector2(1,0)
+                    serpiente_obj.mover()
+                    serpiente_obj.direccion = Vector2(0,0)
+                if event.key == pygame.K_DOWN:
+                    serpiente_obj.direccion = Vector2(0,1)
+                    serpiente_obj.mover()
+                    serpiente_obj.direccion = Vector2(0,0)
+                if event.key == pygame.K_LEFT:
+                    serpiente_obj.direccion = Vector2(-1,0)
+                    serpiente_obj.mover()
+                    serpiente_obj.direccion = Vector2(0,0)
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                 if boton_rect.collidepoint(event.pos):
@@ -104,7 +138,7 @@ def nivel1():
         pygame.draw.rect(screen, boton_color, boton_rect)
         screen.blit(texto_boton, (texto_x, texto_y))
 
-        serpiente_obj = serpiente.Serpiente(6, 11, 6, 10, 7, 10)
+        
         serpiente_obj.dibujar(screen)
 
       

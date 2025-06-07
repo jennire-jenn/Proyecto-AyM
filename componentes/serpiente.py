@@ -13,21 +13,20 @@ class Serpiente:
 
     def mover(self):
         if self.nuevo == True:
-            copia = self.body[:-1]
-            copia.insert(0, copia[0], self.direccion)
-            self.body = copia[:]
+            copia = self.cuerpo[:-1]
+            copia.insert(0, copia[0] + self.direccion)
+            self.cuerpo = copia[:]
             self.nuevo = False
         else:
-            copia = self.body[:-1]
-            copia.insert(0, copia[0], self.direccion)
-            self.body = copia[:]
+            copia = self.cuerpo[:-1]
+            copia.insert(0, copia[0] + self.direccion)
+            self.cuerpo = copia[:]
 
     def alargar(self):
         self.nuevo=True
 
     def caer(self):
-        self.direccion = Vector2(0,1)
-        self.mover()
+        self.cuerpo
 
 
     def dibujar(self, pantalla):

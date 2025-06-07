@@ -6,10 +6,11 @@ import menu
 import primerNivel
 import segundoNivel
 import tercerNivel
+import score
 
 def menu():
     NEGRO = (2, 2, 2)
-    GRIS = (188, 188, 188)
+    
     BLANCO = (255, 255, 255)
     VERDE = (0, 255, 0)
 
@@ -77,7 +78,7 @@ def menu():
                 elif boton2.collidepoint(evento.pos):
                     segundoNivel.nivel2()
                 elif boton3.collidepoint(evento.pos):
-                    tercerNivel.nivel3()
+                    score.score()
             
                     
 
