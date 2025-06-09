@@ -28,6 +28,9 @@ class Serpiente:
     def caer(self):
         self.cuerpo
 
+    def monedaSerpiente(self, moneda):
+        if not moneda.recogida and self.cuerpo[0] == moneda.pos:
+            moneda.recoger()
 
     def dibujar(self, pantalla):
         cuadro= variables.cell_size

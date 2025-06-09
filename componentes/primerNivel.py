@@ -6,6 +6,7 @@ import menu
 import variables
 import serpiente
 from pygame.math import Vector2
+import moneda
 
 class Bloque:
     def __init__(self, x, y, color):
@@ -36,56 +37,59 @@ def nivel1():
     screen = pygame.display.set_mode(variables.pantallaJuego)
     pygame.display.set_caption("GravitySnake - Nivel 1")
 
-    BLACK = (0, 0, 0)
-    GREEN = (0, 200, 0)
-    WHITE = (255, 255, 255)
-    SKY_BLUE = (135, 206, 235)
+    NEGRO = (0, 0, 0)
+    VERDE = (0, 200, 0)
+    BLANCO = (255, 255, 255)
+    CELESTE = (135, 206, 235)
 
     bloques = [
-        Bloque(0, 10, GREEN),
-        Bloque(1, 10, GREEN),
-        Bloque(2, 10, GREEN),
-        Bloque(3, 10, GREEN),
-        Bloque(4, 10, GREEN),
-        Bloque(5, 10, GREEN),
-        Bloque(6, 10, GREEN),
-        Bloque(7, 10, GREEN),
-        Bloque(8, 10, GREEN),
-        Bloque(9, 10, GREEN),
-        Bloque(10, 10, GREEN),
-        Bloque(11, 10, GREEN),
-        Bloque(12, 10, GREEN),
-        Bloque(13, 10, GREEN),
-        Bloque(14, 10, GREEN),
-        Bloque(15, 10, GREEN),
-        Bloque(16, 10, GREEN),
-        Bloque(17, 10, GREEN),
-        Bloque(18, 10, GREEN),
-        Bloque(19, 10, GREEN),
+        Bloque(0, 10, VERDE),
+        Bloque(1, 10, VERDE),
+        Bloque(2, 10, VERDE),
+        Bloque(3, 10, VERDE),
+        Bloque(4, 10, VERDE),
+        Bloque(5, 10, VERDE),
+        Bloque(6, 10, VERDE),
+        Bloque(7, 10, VERDE),
+        Bloque(8, 10, VERDE),
+        Bloque(9, 10, VERDE),
+        Bloque(10, 10, VERDE),
+        Bloque(11, 10, VERDE),
+        Bloque(12, 10, VERDE),
+        Bloque(13, 10, VERDE),
+        Bloque(14, 10, VERDE),
+        Bloque(15, 10, VERDE),
+        Bloque(16, 10, VERDE),
+        Bloque(17, 10, VERDE),
+        Bloque(18, 10, VERDE),
+        Bloque(19, 10, VERDE),
 
-        Bloque(8, 9, GREEN),
-        Bloque(9, 9, GREEN),
-        Bloque(10, 9, GREEN),
-        Bloque(11, 9, GREEN),
-        Bloque(12, 9, GREEN),
-        Bloque(13, 9, GREEN),
-        Bloque(10, 8, GREEN),
-        Bloque(11, 8, GREEN),
-        Bloque(12, 8, GREEN),
+        Bloque(8, 9, VERDE),
+        Bloque(9, 9, VERDE),
+        Bloque(10, 9, VERDE),
+        Bloque(11, 9, VERDE),
+        Bloque(12, 9, VERDE),
+        Bloque(13, 9, VERDE),
+        Bloque(10, 8, VERDE),
+        Bloque(11, 8, VERDE),
+        Bloque(12, 8, VERDE),
     ]
     
     nivel = Nivel(bloques, cell_size)
 
-   
+    moneda_obj = moneda.Moneda(11, 6, (255, 223, 0)) 
+
     boton_rect = pygame.Rect(10, 10, 100, 40)
-    boton_color = WHITE
+    boton_color = BLANCO
     fuente = pygame.font.Font(None, 30)
-    texto_boton = fuente.render("Menú", True, BLACK)
+    texto_boton = fuente.render("Menú", True, NEGRO)
 
     texto_ancho, texto_alto = texto_boton.get_size()
     texto_x = boton_rect.x + (boton_rect.width - texto_ancho) // 2
     texto_y = boton_rect.y + (boton_rect.height - texto_alto) // 2
 
+    puntuacion = 0 
+    
     clock = pygame.time.Clock()
     running = True
 
@@ -100,7 +104,7 @@ def nivel1():
        
         
         while flag:
-         serpiente_obj = serpiente.Serpiente(6, 11, 6, 10, 7, 10)
+         serpiente_obj = serpiente.Serpiente(3, 9, 2, 9, 1, 9)
          flag = False
 
 
@@ -131,17 +135,22 @@ def nivel1():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                 if boton_rect.collidepoint(event.pos):
                     menu.menu()  
+            if serpiente_obj.monedaSerpiente(moneda_obj):
+             puntuacion = 500  
 
-        screen.fill(SKY_BLUE)
+        screen.fill(CELESTE)
         nivel.dibujar(screen)
 
         pygame.draw.rect(screen, boton_color, boton_rect)
         screen.blit(texto_boton, (texto_x, texto_y))
+        moneda_obj.dibujar(screen, cell_size)
 
+        serpiente_obj.monedaSerpiente(moneda_obj)
         
         serpiente_obj.dibujar(screen)
 
-      
+        texto_puntuacion = fuente.render(f"Puntuación: {puntuacion}", True, NEGRO)
+        screen.blit(texto_puntuacion, (screen_width - 200, 10))
         pygame.display.flip()
         clock.tick(60)
 
