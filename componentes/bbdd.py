@@ -25,7 +25,7 @@ def modificar(score,id):
     conn.commit()
 
 def ver():
-    cursor.execute("SELECT * FROM jugadores ORDER BY score DESC LIMIT 4")
+    cursor.execute("SELECT * FROM jugadores ORDER BY score DESC LIMIT 5")
     jugadores = cursor.fetchall()
     print(jugadores)
     return jugadores
