@@ -13,14 +13,14 @@ class Serpiente:
 
     def mover(self):
         if self.nuevo == True:
-            copia = self.cuerpo[:-1]
+            copia = self.cuerpo[:]
             copia.insert(0, copia[0] + self.direccion)
-            self.cuerpo = copia[:]
+            self.cuerpo = copia
             self.nuevo = False
         else:
             copia = self.cuerpo[:-1]
             copia.insert(0, copia[0] + self.direccion)
-            self.cuerpo = copia[:]
+            self.cuerpo = copia
 
     def alargar(self):
         self.nuevo=True
@@ -31,6 +31,8 @@ class Serpiente:
     def monedaSerpiente(self, moneda):
         if not moneda.recogida and self.cuerpo[0] == moneda.pos:
             moneda.recoger()
+
+
 
     def dibujar(self, pantalla):
         cuadro= variables.cell_size

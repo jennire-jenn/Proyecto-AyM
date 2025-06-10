@@ -7,6 +7,7 @@ import variables
 import serpiente
 from pygame.math import Vector2
 import moneda
+import manzana
 
 class Bloque:
     def __init__(self, x, y, color):
@@ -78,6 +79,7 @@ def nivel1():
     nivel = Nivel(bloques, cell_size)
 
     moneda_obj = moneda.Moneda(11, 6, (255, 223, 0)) 
+    manzana_obj = manzana.Manzana(12, 6)
 
     boton_rect = pygame.Rect(10, 10, 100, 40)
     boton_color = BLANCO
@@ -135,8 +137,13 @@ def nivel1():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                 if boton_rect.collidepoint(event.pos):
                     menu.menu()  
-            if serpiente_obj.monedaSerpiente(moneda_obj):
-             puntuacion = 500  
+            if  not moneda_obj.recogida and serpiente_obj.cuerpo[0] == moneda_obj.pos:
+             moneda_obj.recoger()
+             puntuacion = 500
+
+            if manzana_obj.visible and serpiente_obj.cuerpo[0] == manzana_obj.pos:
+                 manzana_obj.desaparecer()
+                 serpiente_obj.alargar()
 
         screen.fill(CELESTE)
         nivel.dibujar(screen)
@@ -144,6 +151,8 @@ def nivel1():
         pygame.draw.rect(screen, boton_color, boton_rect)
         screen.blit(texto_boton, (texto_x, texto_y))
         moneda_obj.dibujar(screen, cell_size)
+        manzana_obj.dibujar(screen)
+
 
         serpiente_obj.monedaSerpiente(moneda_obj)
         
