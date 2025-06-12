@@ -4,29 +4,47 @@ import math
 from pygame.math import Vector2
 import random
 import variables
+from bloque import Bloque
 class Serpiente:
       
     def __init__(self, x1, y1, x2, y2, x3, y3):
         self.cuerpo = [Vector2(x1,y1), Vector2(x2,y2), Vector2(x3,y3)]
         self.direccion= Vector2(1,0)
         self.nuevo = False
+        self.vel = 5
+        self.x = 1
 
     def mover(self):
-        if self.nuevo == True:
-            copia = self.cuerpo[:]
-            copia.insert(0, copia[0] + self.direccion)
-            self.cuerpo = copia
-            self.nuevo = False
-        else:
-            copia = self.cuerpo[:-1]
-            copia.insert(0, copia[0] + self.direccion)
-            self.cuerpo = copia
+        if not self.x == 0:
+            if self.nuevo == True:
+                copia = self.cuerpo[:]
+                copia.insert(0, copia[0] + self.direccion)
+                self.cuerpo = copia
+                self.nuevo = False
+            else:
+                copia = self.cuerpo[:-1]
+                copia.insert(0, copia[0] + self.direccion)
+                self.cuerpo = copia
 
     def alargar(self):
         self.nuevo=True
 
     def caer(self):
         self.cuerpo
+
+      #  if self.cuerpo.coliderect(Bloque):
+       #     self.vel=0;
+       #     self.x=0;
+       # else:
+       #     self.vel = 5
+       #     self.x=1;
+
+       #  if self.cuerpo.coliderect(self.cuerpo):
+       #     self.vel=0;
+       #     self.x=0;
+       # else:
+       #     self.vel = 5
+       #     self.x=1;
 
     def monedaSerpiente(self, moneda):
         if not moneda.recogida and self.cuerpo[0] == moneda.pos:

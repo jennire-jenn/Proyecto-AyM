@@ -8,27 +8,8 @@ import serpiente
 from pygame.math import Vector2
 import moneda
 import manzana
-
-class Bloque:
-    def __init__(self, x, y, color):
-        self.pos = Vector2(x, y)
-        self.color = color
-
-    def dibujar(self, screen, cell_size):
-        rect = pygame.Rect(self.pos.x * cell_size, self.pos.y * cell_size, cell_size, cell_size)
-        pygame.draw.rect(screen, self.color, rect)
-
-class Nivel:
-    def __init__(self, bloques, cell_size):
-        self.bloques = bloques
-        self.cell_size = cell_size
-
-    def agregar_bloque(self, x, y, color):
-        self.bloques.append(Bloque(x, y, color))
-
-    def dibujar(self, screen):
-        for bloque in self.bloques:
-            bloque.dibujar(screen, self.cell_size)
+from bloque import Bloque
+from nivel import Nivel
 
 def nivel1():
     pygame.init()
