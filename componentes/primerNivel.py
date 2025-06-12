@@ -32,6 +32,9 @@ class Nivel:
 
 def nivel1():
     pygame.init()
+    pygame.mixer.init()
+    sonido_moneda = pygame.mixer.Sound("sonido/moneda.wav")
+    sonido_manzana = pygame.mixer.Sound("sonido/manzana.wav")
     cell_size = variables.cell_size
     screen_width, screen_height = variables.pantallaJuego
 
@@ -139,10 +142,12 @@ def nivel1():
                     menu.menu()  
             if  not moneda_obj.recogida and serpiente_obj.cuerpo[0] == moneda_obj.pos:
              moneda_obj.recoger()
+             sonido_moneda.play()
              puntuacion = 500
 
             if manzana_obj.visible and serpiente_obj.cuerpo[0] == manzana_obj.pos:
                  manzana_obj.desaparecer()
+                 sonido_manzana.play()
                  serpiente_obj.alargar()
 
         screen.fill(CELESTE)
