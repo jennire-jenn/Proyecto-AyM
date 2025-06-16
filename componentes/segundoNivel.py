@@ -20,7 +20,6 @@ def nivel2():
     sonido_manzana = pygame.mixer.Sound("sonido/manzana.wav")
     cell_size = variables.cell_size
     screen_width, screen_height = variables.pantallaJuego
-
     screen = pygame.display.set_mode(variables.pantallaJuego)
     pygame.display.set_caption("GravitySnake - Nivel 2")
 
@@ -30,7 +29,6 @@ def nivel2():
     CELESTE = (135, 206, 235)
 
     bloques = [
-
         Bloque(1, 10, VERDE),
         Bloque(2, 10, VERDE),
         Bloque(3, 10, VERDE),
@@ -39,9 +37,11 @@ def nivel2():
         Bloque(6, 10, VERDE),
         Bloque(7, 10, VERDE),   
         Bloque(11, 10, VERDE),
+        Bloque(11, 11, VERDE),
+        Bloque(11, 12, VERDE),
+        Bloque(11, 13, VERDE),
         Bloque(12, 10, VERDE),
         Bloque(13, 10, VERDE),
-        
         Bloque(11, 14, VERDE),
         Bloque(12, 14, VERDE),
         Bloque(13, 14, VERDE),
@@ -51,75 +51,67 @@ def nivel2():
     ]
     
     nivel = Nivel(bloques, cell_size)
-
     moneda_obj = moneda.Moneda(16, 12, (255, 223, 0))
-    manzana_obj = manzana.Manzana(16, 13)
+    manzana_obj = manzana.Manzana(7, 8)
 
     boton_rect = pygame.Rect(10, 10, 100, 40)
     boton_color = BLANCO
     fuente = pygame.font.Font(None, 30)
     texto_boton = fuente.render("Menú", True, NEGRO)
-
     texto_ancho, texto_alto = texto_boton.get_size()
     texto_x = boton_rect.x + (boton_rect.width - texto_ancho) // 2
     texto_y = boton_rect.y + (boton_rect.height - texto_alto) // 2
 
     puntuacion = 0 
-    
     clock = pygame.time.Clock()
     running = True
-
     flag= True
-
     SCREEN_UPDATE = pygame.USEREVENT
-
     pygame.time.set_timer(SCREEN_UPDATE,150)
 
-
-    while running:
-       
-        
+    while running:      
         while flag:
          serpiente_obj = serpiente.Serpiente(3, 9, 2, 9, 1, 9)
          flag = False
 
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == SCREEN_UPDATE:
-                serpiente_obj.caer()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    serpiente_obj.direccion = Vector2(0,-1)
-                    serpiente_obj.mover()
-                    serpiente_obj.direccion = Vector2(0,0)
-                if event.key == pygame.K_RIGHT:
-                    serpiente_obj.direccion = Vector2(1,0)
-                    serpiente_obj.mover()
-                    serpiente_obj.direccion = Vector2(0,0)
-                if event.key == pygame.K_DOWN:
-                    serpiente_obj.direccion = Vector2(0,1)
-                    serpiente_obj.mover()
-                    serpiente_obj.direccion = Vector2(0,0)
-                if event.key == pygame.K_LEFT:
-                    serpiente_obj.direccion = Vector2(-1,0)
-                    serpiente_obj.mover()
-                    serpiente_obj.direccion = Vector2(0,0)
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == SCREEN_UPDATE:
+                    serpiente_obj.caer()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP:
+                        serpiente_obj.direccion = Vector2(0,-1)
+                        serpiente_obj.mover(bloques)
+                        serpiente_obj.direccion = Vector2(0,0)
+                    if event.key == pygame.K_RIGHT:
+                        serpiente_obj.direccion = Vector2(1,0)
+                        serpiente_obj.mover(bloques)
+                        serpiente_obj.direccion = Vector2(0,0)
+                    if event.key == pygame.K_DOWN:
+                        serpiente_obj.direccion = Vector2(0,1)
+                        serpiente_obj.mover(bloques)
+                        serpiente_obj.direccion = Vector2(0,0)
+                    if event.key == pygame.K_LEFT:
+                        serpiente_obj.direccion = Vector2(-1,0)
+                        serpiente_obj.mover(bloques)
+                        serpiente_obj.direccion = Vector2(0,0)
 
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
-                if boton_rect.collidepoint(event.pos):
-                    menu.menu()  
-            if  not moneda_obj.recogida and serpiente_obj.cuerpo[0] == moneda_obj.pos:
-                moneda_obj.recoger()
-                sonido_moneda.play()
-                puntuacion = 500
 
-            if manzana_obj.visible and serpiente_obj.cuerpo[0] == manzana_obj.pos:
-                manzana_obj.desaparecer()
-                sonido_manzana.play()
-                serpiente_obj.alargar()
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
+                    if boton_rect.collidepoint(event.pos):
+                        menu.menu()  
+                if  not moneda_obj.recogida and serpiente_obj.cuerpo[0] == moneda_obj.pos:
+                    moneda_obj.recoger()
+                    sonido_moneda.play()
+                    puntuacion = 500
+
+                if manzana_obj.visible and serpiente_obj.cuerpo[0] == manzana_obj.pos:
+                    manzana_obj.desaparecer()
+                    sonido_manzana.play()
+                    serpiente_obj.alargar()
 
         screen.fill(CELESTE)
         nivel.dibujar(screen)

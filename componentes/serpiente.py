@@ -14,17 +14,35 @@ class Serpiente:
         self.vel = 5
         self.x = 1
 
-    def mover(self):
-        if not self.x == 0:
-            if self.nuevo == True:
-                copia = self.cuerpo[:]
-                copia.insert(0, copia[0] + self.direccion)
-                self.cuerpo = copia
-                self.nuevo = False
-            else:
-                copia = self.cuerpo[:-1]
-                copia.insert(0, copia[0] + self.direccion)
-                self.cuerpo = copia
+    def mover(self, bloques):
+        nueva_cabeza = self.cuerpo[0] + self.direccion
+        cabeza_rect = pygame.Rect(
+            int(nueva_cabeza.x * variables.cell_size),
+            int(nueva_cabeza.y * variables.cell_size),
+            variables.cell_size,
+            variables.cell_size
+        )
+        for bloque in bloques:
+            bloque_rect = pygame.Rect(
+                int(bloque.pos.x * variables.cell_size),
+                int(bloque.pos.y * variables.cell_size),
+                variables.cell_size,
+                variables.cell_size
+            )
+            if cabeza_rect.colliderect(bloque_rect):
+                self.direccion = Vector2(0, 0)
+                return 
+        if self.nuevo:  
+            copia = self.cuerpo[:]
+            copia.insert(0, nueva_cabeza)
+            self.cuerpo = copia
+            self.nuevo = False
+        else: 
+            copia = self.cuerpo[:-1]
+            copia.insert(0, nueva_cabeza)
+            self.cuerpo = copia
+
+
 
     def alargar(self):
         self.nuevo=True
