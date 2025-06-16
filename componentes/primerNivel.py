@@ -113,7 +113,10 @@ def nivel1():
                     serpiente_obj.direccion = Vector2(-1,0)
                     serpiente_obj.mover(bloques)
                     serpiente_obj.direccion = Vector2(0,0)
-
+            if serpiente_obj.limite():
+                nivel1()
+                pygame.quit() 
+                sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                 if boton_rect.collidepoint(event.pos):
                     menu.menu()  

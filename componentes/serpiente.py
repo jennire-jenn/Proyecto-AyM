@@ -42,8 +42,6 @@ class Serpiente:
             copia.insert(0, nueva_cabeza)
             self.cuerpo = copia
 
-
-
     def alargar(self):
         self.nuevo=True
 
@@ -68,7 +66,12 @@ class Serpiente:
         if not moneda.recogida and self.cuerpo[0] == moneda.pos:
             moneda.recoger()
 
-
+    def limite(self):
+        cabeza = self.cuerpo[0] 
+        if cabeza.x < 0 or cabeza.x >= variables.cell_number or cabeza.y < 0 or cabeza.y >= variables.cell_number:
+            print("Saliste de los límites del nivel")
+            return True
+        return False
 
     def dibujar(self, pantalla):
         cuadro= variables.cell_size
