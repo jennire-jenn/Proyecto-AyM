@@ -75,23 +75,23 @@ def nivel3():
                     pygame.quit()
                     sys.exit()
                 if event.type == SCREEN_UPDATE:
-                    serpiente_obj.caer()
+                    serpiente_obj.caer(bloques)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
                         serpiente_obj.direccion = Vector2(0,-1)
-                        serpiente_obj.mover(bloques)
+                        serpiente_obj.mover(bloques, forzado=True)
                         serpiente_obj.direccion = Vector2(0,0)
                     if event.key == pygame.K_RIGHT:
                         serpiente_obj.direccion = Vector2(1,0)
-                        serpiente_obj.mover(bloques)
+                        serpiente_obj.mover(bloques, forzado=True)
                         serpiente_obj.direccion = Vector2(0,0)
                     if event.key == pygame.K_DOWN:
                         serpiente_obj.direccion = Vector2(0,1)
-                        serpiente_obj.mover(bloques)
+                        serpiente_obj.mover(bloques, forzado=True)
                         serpiente_obj.direccion = Vector2(0,0)
                     if event.key == pygame.K_LEFT:
                         serpiente_obj.direccion = Vector2(-1,0)
-                        serpiente_obj.mover(bloques)
+                        serpiente_obj.mover(bloques, forzado=True)
                         serpiente_obj.direccion = Vector2(0,0)
 
                 if serpiente_obj.limite():

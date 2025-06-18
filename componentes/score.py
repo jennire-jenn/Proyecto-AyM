@@ -1,6 +1,7 @@
 import pygame
 import sys
 import bbdd
+import menu
 def score():
     NEGRO = (2, 2, 2)
     
@@ -16,7 +17,7 @@ def score():
     fuente = pygame.font.SysFont(None, 30)
     fuente2 = pygame.font.SysFont(None, 50)
     
-
+    boton = pygame.Rect(WIDTH // 2 + 200, HEIGHT // 2 + 150, 100, 60)
 
     clock = pygame.time.Clock()
     running = True
@@ -35,6 +36,9 @@ def score():
                 running = False
                 pygame.quit()
                 sys.exit()
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                if boton.collidepoint(evento.pos):
+                    menu.menu()
             
             
                     
@@ -58,6 +62,10 @@ def score():
         pantalla.blit(texto5, (WIDTH // 2 - 100, HEIGHT // 2 + 50))
         texto6 = fuente.render(nombre5, True, BLANCO)
         pantalla.blit(texto6, (WIDTH // 2 - 100, HEIGHT // 2 + 100))
+
+        pygame.draw.rect(pantalla, BLANCO, boton)
+        texto7 = fuente.render("Menú", True, NEGRO)
+        pantalla.blit(texto7, texto7.get_rect(center=boton.center))
 
 
 

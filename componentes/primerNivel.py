@@ -95,23 +95,24 @@ def nivel1():
                 pygame.quit()
                 sys.exit()
             if event.type == SCREEN_UPDATE:
-                serpiente_obj.caer()
+                serpiente_obj.caer(bloques)
+                
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     serpiente_obj.direccion = Vector2(0,-1)
-                    serpiente_obj.mover(bloques)
+                    serpiente_obj.mover(bloques, forzado=True)
                     serpiente_obj.direccion = Vector2(0,0)
                 if event.key == pygame.K_RIGHT:
                     serpiente_obj.direccion = Vector2(1,0)
-                    serpiente_obj.mover(bloques)
+                    serpiente_obj.mover(bloques, forzado=True)
                     serpiente_obj.direccion = Vector2(0,0)
                 if event.key == pygame.K_DOWN:
                     serpiente_obj.direccion = Vector2(0,1)
-                    serpiente_obj.mover(bloques)
+                    serpiente_obj.mover(bloques, forzado=True)
                     serpiente_obj.direccion = Vector2(0,0)
                 if event.key == pygame.K_LEFT:
                     serpiente_obj.direccion = Vector2(-1,0)
-                    serpiente_obj.mover(bloques)
+                    serpiente_obj.mover(bloques, forzado=True)
                     serpiente_obj.direccion = Vector2(0,0)
             if serpiente_obj.limite():
                 nivel1()
@@ -129,6 +130,7 @@ def nivel1():
                  manzana_obj.desaparecer()
                  sonido_manzana.play()
                  serpiente_obj.alargar()
+                
 
         screen.fill(CELESTE)
         nivel.dibujar(screen)
@@ -140,7 +142,7 @@ def nivel1():
 
         serpiente_obj.monedaSerpiente(moneda_obj)
         
-        serpiente_obj.dibujar(screen)
+        serpiente_rect= serpiente_obj.dibujar(screen)
 
         texto_puntuacion = fuente.render(f"Puntuación: {puntuacion}", True, NEGRO)
         screen.blit(texto_puntuacion, (screen_width - 200, 10))

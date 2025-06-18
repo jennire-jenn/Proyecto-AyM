@@ -1,8 +1,5 @@
 import pygame
 import sys
-import math
-import random
-import menu
 import primerNivel
 import segundoNivel
 import tercerNivel
@@ -31,34 +28,8 @@ def menu():
 
     boton3 = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 + 100, 200, 60)
 
-    class Vibora:
-        def __init__(self, x):
-            self.x = x
-            self.y = random.randint(-200, 0)
-            self.amp = random.randint(10, 20)
-            self.vel = random.uniform(1, 2)
+    boton4 = pygame.Rect(WIDTH // 2 + 200, HEIGHT // 2 + 150, 100, 60)
 
-        def mover(self):
-            self.y += self.vel
-            if self.y > HEIGHT + 50:
-                self.y = random.randint(-200, 0)
-
-        def dibujar(self, pantalla):
-            puntos = []
-            for i in range(50):
-                y = self.y + i
-                x = self.x + math.sin((y) * 0.02) * self.amp
-                puntos.append((x, y))
-            pygame.draw.lines(pantalla, VERDE, False, puntos, 2)
-
-    viboras = []
-    for _ in range(10):
-        lado = random.choice(["izq", "der"])
-        if lado == "izq":
-            x = random.randint(0, boton1.left - 10)
-        else:
-            x = random.randint(boton1.right + 10, WIDTH)
-        viboras.append(Vibora(x))
 
     clock = pygame.time.Clock()
     running = True
@@ -78,6 +49,8 @@ def menu():
                 elif boton2.collidepoint(evento.pos):
                     segundoNivel.nivel2()
                 elif boton3.collidepoint(evento.pos):
+                    tercerNivel.nivel3()
+                elif boton4.collidepoint(evento.pos):
                     score.score()
             
                     
@@ -105,6 +78,10 @@ def menu():
         pygame.draw.rect(pantalla, BLANCO, boton3)
         texto3 = fuente.render("Nivel 3", True, NEGRO)
         pantalla.blit(texto3, texto3.get_rect(center=boton3.center))
+
+        pygame.draw.rect(pantalla, BLANCO, boton4)
+        texto4 = fuente.render("Scores", True, NEGRO)
+        pantalla.blit(texto4, texto4.get_rect(center=boton4.center))
 
         texto4 = fuente2.render("Elija un nivel", True, BLANCO)
         pantalla.blit(texto4, (WIDTH // 2 -110, HEIGHT // 2 - 180))
