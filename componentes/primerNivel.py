@@ -10,6 +10,7 @@ import moneda
 import manzana
 from bloque import Bloque
 from nivel import Nivel
+import bbdd
 
 def nivel1():
     pygame.init()
@@ -86,6 +87,11 @@ def nivel1():
 
     pygame.time.set_timer(SCREEN_UPDATE,150)
 
+    jugadores=bbdd.veractual()
+    jugador= jugadores[0]
+    id=jugador[0]
+    
+
     while running:
                
         while flag:
@@ -124,6 +130,9 @@ def nivel1():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                 if boton_rect.collidepoint(event.pos):
                     menu.menu()  
+           
+           #  Hacer que las cosas que usan objeto moneda y manzana sea una funcion a la que le pases el objeto para que pueda haber varias de mejor forma
+           
             if  not moneda_obj.recogida and serpiente_obj.cuerpo[0] == moneda_obj.pos:
              moneda_obj.recoger()
              sonido_moneda.play()

@@ -16,7 +16,7 @@ cursor.execute(
 )
 
 def agregar(nombre):
-    cursor.execute("INSERT INTO jugadores (nombre) VALUES (?)", (nombre,))
+    cursor.execute("INSERT INTO jugadores (nombre) VALUES (?)", (nombre))
     conn.commit()
 
 
@@ -26,6 +26,12 @@ def modificar(score,id):
 
 def ver():
     cursor.execute("SELECT * FROM jugadores ORDER BY score DESC LIMIT 5")
+    jugadores = cursor.fetchall()
+    print(jugadores)
+    return jugadores
+
+def veractual():
+    cursor.execute("SELECT * FROM jugadores ORDER BY id DESC LIMIT 1")
     jugadores = cursor.fetchall()
     print(jugadores)
     return jugadores

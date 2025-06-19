@@ -28,31 +28,35 @@ def nivel2():
     BLANCO = (255, 255, 255)
     CELESTE = (135, 206, 235)
 
+    cesped= pygame.image.load('img/cesped.png').convert_alpha()
+    tierra= pygame.image.load('img/tierra.png').convert_alpha()
+
     bloques = [
-        Bloque(1, 10, VERDE),
-        Bloque(2, 10, VERDE),
-        Bloque(3, 10, VERDE),
-        Bloque(4, 10, VERDE),
-        Bloque(5, 10, VERDE),
-        Bloque(6, 10, VERDE),
-        Bloque(7, 10, VERDE),   
-        Bloque(11, 10, VERDE),
-        Bloque(11, 11, VERDE),
-        Bloque(11, 12, VERDE),
-        Bloque(11, 13, VERDE),
-        Bloque(12, 10, VERDE),
-        Bloque(13, 10, VERDE),
-        Bloque(11, 14, VERDE),
-        Bloque(12, 14, VERDE),
-        Bloque(13, 14, VERDE),
-        Bloque(14, 14, VERDE),
-        Bloque(15, 14, VERDE),
-        Bloque(16, 14, VERDE),
+        Bloque(1, 10, VERDE,cesped),
+        Bloque(2, 10, VERDE,cesped),
+        Bloque(3, 10, VERDE,cesped),
+        Bloque(4, 10, VERDE,cesped),
+        Bloque(5, 10, VERDE,cesped),
+        Bloque(6, 10, VERDE,cesped),
+        Bloque(7, 10, VERDE,cesped),   
+        Bloque(11, 10, VERDE,cesped),
+        Bloque(11, 11, VERDE,tierra),
+        Bloque(11, 12, VERDE,tierra),
+        Bloque(11, 13, VERDE,tierra),
+        Bloque(12, 10, VERDE,cesped),
+        Bloque(13, 10, VERDE,cesped),
+        Bloque(11, 14, VERDE,tierra),
+        Bloque(12, 14, VERDE,cesped),
+        Bloque(13, 14, VERDE,cesped),
+        Bloque(14, 14, VERDE,cesped),
+        Bloque(15, 14, VERDE,cesped),
+        Bloque(16, 14, VERDE,cesped),
     ]
     
     nivel = Nivel(bloques, cell_size)
     moneda_obj = moneda.Moneda(16, 12, (255, 223, 0))
     manzana_obj = manzana.Manzana(7, 8)
+    moneda_ob = moneda.Moneda(16, 11, (255, 223, 0))
 
     boton_rect = pygame.Rect(10, 10, 100, 40)
     boton_color = BLANCO
@@ -109,7 +113,12 @@ def nivel2():
                 if  not moneda_obj.recogida and serpiente_obj.cuerpo[0] == moneda_obj.pos:
                     moneda_obj.recoger()
                     sonido_moneda.play()
-                    puntuacion = 500
+                    puntuacion += 500
+
+                if  not moneda_ob.recogida and serpiente_obj.cuerpo[0] == moneda_ob.pos:
+                    moneda_obj.recoger()
+                    sonido_moneda.play()
+                    puntuacion += 500
 
                 if manzana_obj.visible and serpiente_obj.cuerpo[0] == manzana_obj.pos:
                     manzana_obj.desaparecer()
@@ -122,8 +131,10 @@ def nivel2():
         pygame.draw.rect(screen, boton_color, boton_rect)
         screen.blit(texto_boton, (texto_x, texto_y))
         moneda_obj.dibujar(screen, cell_size)
+        moneda_ob.dibujar(screen, cell_size)
 
         serpiente_obj.monedaSerpiente(moneda_obj)
+        serpiente_obj.monedaSerpiente(moneda_ob)
         
         serpiente_obj.dibujar(screen)
         manzana_obj.dibujar(screen)
