@@ -9,6 +9,26 @@ class Serpiente:
         self.direccion= Vector2(1,0)
         self.nuevo = False
 
+        self.cabeza_arriba = pygame.image.load('img/cabeza_arriba.png').convert_alpha()
+        self.cabeza_abajo = pygame.image.load('img/cabeza_abajo.png').convert_alpha()
+        self.cabeza_der = pygame.image.load('img/cabeza_der.png').convert_alpha()
+        self.cabeza_izq = pygame.image.load('img/cabeza_izq.png').convert_alpha()
+
+        self.vertical = pygame.image.load('img/vertical.png').convert_alpha()
+        self.horizontal = pygame.image.load('img/horizontal.png').convert_alpha()
+        
+        self.cuerpo_tr = pygame.image.load('img/cuerpo_tr.png').convert_alpha()
+        self.cuerpo_tl = pygame.image.load('img/cuerpo_tl.png').convert_alpha()
+        self.cuerpo_br = pygame.image.load('img/cuerpo_br.png').convert_alpha()
+        self.cuerpo_bl = pygame.image.load('img/cuerpo_bl.png').convert_alpha()
+
+        self.cola_arriba = pygame.image.load('img/cola_arriba.png').convert_alpha()
+        self.cola_abajo = pygame.image.load('img/cola_abajo.png').convert_alpha()
+        self.cola_der = pygame.image.load('img/cola_der.png').convert_alpha()
+        self.cola_izq = pygame.image.load('img/cola_izq.png').convert_alpha()
+
+        
+
     def mover(self, bloques, forzado=True):
         nueva_cabeza = self.cuerpo[0] + self.direccion
 
@@ -72,15 +92,47 @@ class Serpiente:
         return False
 
     def dibujar(self, pantalla):
-        cuadro= variables.cell_size
-        serpiente_rect = []
-        for bloque in self.cuerpo:
-            x_pos= int(bloque.x*cuadro)
-            y_pos= int(bloque.y*cuadro)
-            bloque_rect= pygame.Rect(x_pos, y_pos, cuadro, cuadro)
-            pygame.draw.rect(pantalla,(0, 255, 0),bloque_rect)
-            serpiente_rect.append(bloque_rect)
-        return serpiente_rect
+        self.orientacion_cabeza()
+        self.orientacion_cola()
+
+        for i,bloque in enumerate(self.cuerpo):
+            x_pos = int(bloque.x * variables.cell_size)
+            y_pos = int(bloque.y * variables.cell_size)
+            bloque_rect = pygame.Rect(x_pos,y_pos,variables.cell_size,variables.cell_size)
+            if i == 0:
+                pantalla.blit(self.cabeza,bloque_rect)
+            elif i == len(self.cuerpo) - 1:
+                pantalla.blit(self.tail,bloque_rect)
+            else:
+                bloque_anterior = self.cuerpo[i + 1] - bloque
+                bloque_siguiente = self.cuerpo[i - 1] - bloque
+                if bloque_anterior.x == bloque_siguiente.x:
+                    pantalla.blit(self.vertical,bloque_rect)
+                elif bloque_anterior.y == bloque_siguiente.y:
+                    pantalla.blit(self.horizontal,bloque_rect)
+                else:
+                    if bloque_anterior.x == -1 and bloque_siguiente.y == -1 or bloque_anterior.y == -1 and bloque_siguiente.x == -1:
+                        pantalla.blit(self.cuerpo_tl,bloque_rect)
+                    elif bloque_anterior.x == -1 and bloque_siguiente.y == 1 or bloque_anterior.y == 1 and bloque_siguiente.x == -1:
+                        pantalla.blit(self.cuerpo_bl,bloque_rect)
+                    elif bloque_anterior.x == 1 and bloque_siguiente.y == -1 or bloque_anterior.y == -1 and bloque_siguiente.x == 1:
+                        pantalla.blit(self.cuerpo_tr,bloque_rect)
+                    elif bloque_anterior.x == 1 and bloque_siguiente.y == 1 or bloque_anterior.y == 1 and bloque_siguiente.x == 1:
+                        pantalla.blit(self.cuerpo_br,bloque_rect)
+
+    def orientacion_cabeza(self):
+        orientacion = self.cuerpo[1] - self.cuerpo[0]
+        if orientacion == Vector2(1,0): self.cabeza = self.cabeza_izq
+        elif orientacion == Vector2(-1,0): self.cabeza = self.cabeza_der
+        elif orientacion == Vector2(0,1): self.cabeza = self.cabeza_arriba
+        elif orientacion == Vector2(0,-1): self.cabeza = self.cabeza_abajo
+
+    def orientacion_cola(self):
+        orientacion = self.cuerpo[-2] - self.cuerpo[-1]
+        if orientacion == Vector2(1,0): self.tail = self.cola_izq
+        elif orientacion == Vector2(-1,0): self.tail = self.cola_der
+        elif orientacion == Vector2(0,1): self.tail = self.cola_arriba
+        elif orientacion == Vector2(0,-1): self.tail = self.cola_abajo
     
     def esta_sostenida(self, bloques):
         for segmento in self.cuerpo:

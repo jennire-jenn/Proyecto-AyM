@@ -21,7 +21,7 @@ def login():
     pantalla = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Gravity Snake")
 
-    logo = pygame.image.load("logo.jpg")
+    logo = pygame.image.load('img/logo.jpg')
     logo = pygame.transform.scale(logo, (300, 200))
     logo_rect = logo.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 80))
 

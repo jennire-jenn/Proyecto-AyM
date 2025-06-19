@@ -6,11 +6,13 @@ class Moneda:
         self.pos = Vector2(x, y)
         self.color = color
         self.recogida = False
+        self.moneda_img = pygame.image.load('img/moneda.png').convert_alpha()
 
     def dibujar(self, screen, cell_size):
         if not self.recogida:
             rect = pygame.Rect(self.pos.x * cell_size, self.pos.y * cell_size, cell_size, cell_size)
-            pygame.draw.ellipse(screen, self.color, rect)
+            screen.blit(self.moneda_img, rect)
+           # pygame.draw.ellipse(screen, self.color, rect)
 
     def recoger(self):
         self.recogida = True
