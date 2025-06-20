@@ -32,31 +32,53 @@ def nivel2():
     tierra= pygame.image.load('img/tierra.png').convert_alpha()
 
     bloques = [
-        Bloque(1, 10, VERDE,cesped),
-        Bloque(2, 10, VERDE,cesped),
-        Bloque(3, 10, VERDE,cesped),
-        Bloque(4, 10, VERDE,cesped),
-        Bloque(5, 10, VERDE,cesped),
-        Bloque(6, 10, VERDE,cesped),
-        Bloque(7, 10, VERDE,cesped),   
-        Bloque(11, 10, VERDE,cesped),
-        Bloque(11, 11, VERDE,tierra),
+        Bloque(1, 9, VERDE,cesped),
+        Bloque(2, 9, VERDE,cesped),
+        Bloque(3, 9, VERDE,cesped),
+        Bloque(3, 5, VERDE,cesped),
+        Bloque(3, 6, VERDE,tierra),
+        Bloque(3, 7, VERDE,tierra),
+        Bloque(4, 9, VERDE,cesped),
+
+        Bloque(7, 7, VERDE,cesped),
+        Bloque(6, 5, VERDE,cesped),
+        Bloque(7, 5, VERDE,cesped),
+
+        Bloque(8, 9, VERDE,cesped),
+        Bloque(9, 9, VERDE,cesped),
+        Bloque(10, 9, VERDE,cesped),
+        Bloque(11, 9, VERDE,cesped),
+
+        Bloque(11, 11, VERDE,cesped),
         Bloque(11, 12, VERDE,tierra),
         Bloque(11, 13, VERDE,tierra),
-        Bloque(12, 10, VERDE,cesped),
-        Bloque(13, 10, VERDE,cesped),
         Bloque(11, 14, VERDE,tierra),
-        Bloque(12, 14, VERDE,cesped),
-        Bloque(13, 14, VERDE,cesped),
-        Bloque(14, 14, VERDE,cesped),
-        Bloque(15, 14, VERDE,cesped),
-        Bloque(16, 14, VERDE,cesped),
+        Bloque(12, 11, VERDE,cesped),
+        Bloque(13, 11, VERDE,cesped),
+
+        Bloque(11, 15, VERDE,tierra),
+        Bloque(11, 16, VERDE,tierra),
+        Bloque(12, 16, VERDE,cesped),
+        Bloque(13, 16, VERDE,cesped),
+        Bloque(14, 16, VERDE,cesped),
+        Bloque(15, 16, VERDE,cesped),
     ]
     
     nivel = Nivel(bloques, cell_size)
-    moneda_obj = moneda.Moneda(16, 12, (255, 223, 0))
-    manzana_obj = manzana.Manzana(7, 8)
-    moneda_ob = moneda.Moneda(16, 11, (255, 223, 0))
+    #moneda_obj = moneda.Moneda(16, 12, (255, 223, 0))
+    #manzana_obj = manzana.Manzana(7, 8)
+    #moneda_ob = moneda.Moneda(16, 11, (255, 223, 0))
+
+    monedas = [
+                moneda.Moneda(17, 12, (255, 223, 0)),
+                #moneda.Moneda(5, 5, (255, 223, 0)),
+                #moneda.Moneda(3, 3, (255, 223, 0))
+            ]
+    manzanas = [
+            manzana.Manzana(5, 7),
+            #manzana.Manzana(10, 6),
+            #manzana.Manzana(12, 8)
+            ]
 
     boton_rect = pygame.Rect(10, 10, 100, 40)
     boton_color = BLANCO
@@ -75,7 +97,7 @@ def nivel2():
 
     while running:      
         while flag:
-         serpiente_obj = serpiente.Serpiente(3, 9, 2, 9, 1, 9)
+         serpiente_obj = serpiente.Serpiente(3, 7, 2, 7, 1, 7)
          flag = False
 
 
@@ -110,39 +132,30 @@ def nivel2():
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                     if boton_rect.collidepoint(event.pos):
                         menu.menu()  
-                if  not moneda_obj.recogida and serpiente_obj.cuerpo[0] == moneda_obj.pos:
-                    moneda_obj.recoger()
-                    sonido_moneda.play()
-                    puntuacion += 500
-
-                if  not moneda_ob.recogida and serpiente_obj.cuerpo[0] == moneda_ob.pos:
-                    moneda_obj.recoger()
-                    sonido_moneda.play()
-                    puntuacion += 500
-
-                if manzana_obj.visible and serpiente_obj.cuerpo[0] == manzana_obj.pos:
-                    manzana_obj.desaparecer()
-                    sonido_manzana.play()
-                    serpiente_obj.alargar()
-
+             
+        manzana.Manzana.manejar_colisiones(manzanas, serpiente_obj, sonido_manzana)
+        puntuacion += moneda.Moneda.manejar_colisiones(monedas, serpiente_obj, sonido_moneda)
         screen.fill(CELESTE)
         nivel.dibujar(screen)
+        for moneda_obj in monedas:
+                    moneda_obj.dibujar(screen, cell_size)
+                    serpiente_obj.dibujar(screen)
+        for manzana_obj in manzanas:
+                        manzana_obj.dibujar(screen)
+
+        serpiente_obj.dibujar(screen)
 
         pygame.draw.rect(screen, boton_color, boton_rect)
         screen.blit(texto_boton, (texto_x, texto_y))
         moneda_obj.dibujar(screen, cell_size)
-        moneda_ob.dibujar(screen, cell_size)
+        manzana_obj.dibujar(screen)
 
         serpiente_obj.monedaSerpiente(moneda_obj)
-        serpiente_obj.monedaSerpiente(moneda_ob)
         
-        serpiente_obj.dibujar(screen)
-        manzana_obj.dibujar(screen)
+        #esto no se esta usando
+        serpiente_rect= serpiente_obj.dibujar(screen)
 
         texto_puntuacion = fuente.render(f"Puntuación: {puntuacion}", True, NEGRO)
         screen.blit(texto_puntuacion, (screen_width - 200, 10))
         pygame.display.flip()
         clock.tick(60)
-
-
-

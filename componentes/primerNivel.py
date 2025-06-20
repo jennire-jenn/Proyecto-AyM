@@ -68,9 +68,16 @@ def nivel1():
     ]
     
     nivel = Nivel(bloques, cell_size)
-
-    moneda_obj = moneda.Moneda(11, 6, (255, 223, 0)) 
-    manzana_obj = manzana.Manzana(7, 7)
+    monedas = [
+            moneda.Moneda(11, 6, (255, 223, 0)),
+            #moneda.Moneda(5, 5, (255, 223, 0)),
+            #moneda.Moneda(3, 3, (255, 223, 0))
+        ]
+    manzanas = [
+        manzana.Manzana(7, 7),
+        #manzana.Manzana(10, 6),
+        #manzana.Manzana(12, 8)
+    ]
 
     boton_rect = pygame.Rect(10, 10, 100, 40)
     boton_color = BLANCO
@@ -130,22 +137,18 @@ def nivel1():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                 if boton_rect.collidepoint(event.pos):
                     menu.menu()  
-           
-           #  Hacer que las cosas que usan objeto moneda y manzana sea una funcion a la que le pases el objeto para que pueda haber varias de mejor forma
-           
-            if  not moneda_obj.recogida and serpiente_obj.cuerpo[0] == moneda_obj.pos:
-             moneda_obj.recoger()
-             sonido_moneda.play()
-             puntuacion = 500
-
-            if manzana_obj.visible and serpiente_obj.cuerpo[0] == manzana_obj.pos:
-                 manzana_obj.desaparecer()
-                 sonido_manzana.play()
-                 serpiente_obj.alargar()
-                
-
+                    
+        manzana.Manzana.manejar_colisiones(manzanas, serpiente_obj, sonido_manzana)
+        puntuacion += moneda.Moneda.manejar_colisiones(monedas, serpiente_obj, sonido_moneda)
         screen.fill(CELESTE)
         nivel.dibujar(screen)
+        for moneda_obj in monedas:
+                    moneda_obj.dibujar(screen, cell_size)
+                    serpiente_obj.dibujar(screen)
+        for manzana_obj in manzanas:
+                        manzana_obj.dibujar(screen)
+
+        serpiente_obj.dibujar(screen)
 
         pygame.draw.rect(screen, boton_color, boton_rect)
         screen.blit(texto_boton, (texto_x, texto_y))
@@ -154,12 +157,16 @@ def nivel1():
 
         serpiente_obj.monedaSerpiente(moneda_obj)
         
+        #esto no se esta usando
         serpiente_rect= serpiente_obj.dibujar(screen)
 
         texto_puntuacion = fuente.render(f"Puntuación: {puntuacion}", True, NEGRO)
         screen.blit(texto_puntuacion, (screen_width - 200, 10))
         pygame.display.flip()
         clock.tick(60)
+
+        
+
 
 
 
