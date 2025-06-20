@@ -94,9 +94,14 @@ def nivel1():
 
     pygame.time.set_timer(SCREEN_UPDATE,150)
 
-    jugadores=bbdd.veractual()
-    jugador= jugadores[0]
-    id=jugador[0]
+    nombre_jugador = "Jugador1"  
+    bbdd.agregar(nombre_jugador)
+    jugador_actual = bbdd.veractual()[0]
+    id_actual = jugador_actual[0]
+    
+   # jugadores=bbdd.veractual()
+   # jugador= jugadores[0]
+   # id=jugador[0]
     
 
     while running:
@@ -108,6 +113,7 @@ def nivel1():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                bbdd.modificar(puntuacion, id_actual)  
                 pygame.quit()
                 sys.exit()
             if event.type == SCREEN_UPDATE:
@@ -131,11 +137,13 @@ def nivel1():
                     serpiente_obj.mover(bloques, forzado=True)
                     serpiente_obj.direccion = Vector2(0,0)
             if serpiente_obj.limite():
+                bbdd.modificar(puntuacion, id_actual) 
                 nivel1()
                 pygame.quit() 
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                 if boton_rect.collidepoint(event.pos):
+                    bbdd.modificar(puntuacion, id_actual)            
                     menu.menu()  
                     
         manzana.Manzana.manejar_colisiones(manzanas, serpiente_obj, sonido_manzana)
