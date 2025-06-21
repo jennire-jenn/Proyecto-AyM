@@ -5,9 +5,14 @@ import segundoNivel
 import tercerNivel
 import score
 
-def menu():
+
+
+
+
+def menu(nombre=None):
     NEGRO = (2, 2, 2)
-    
+    print(f"Bienvenido al menú, {nombre}!")
+
     BLANCO = (255, 255, 255)
     VERDE = (0, 255, 0)
 
@@ -45,28 +50,16 @@ def menu():
                 sys.exit()
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 if boton1.collidepoint(evento.pos):
-                    primerNivel.nivel1()
+                    primerNivel.nivel1(nombre)
                 elif boton2.collidepoint(evento.pos):
-                    segundoNivel.nivel2()
+                    segundoNivel.nivel2(nombre)
                 elif boton3.collidepoint(evento.pos):
-                    tercerNivel.nivel3()
+                    tercerNivel.nivel3(nombre)
                 elif boton4.collidepoint(evento.pos):
                     score.score()
             
-                    
-
-
-    
         pantalla.fill(NEGRO)
 
-        
-        
-
-
-       
-
-
-        
         pygame.draw.rect(pantalla, BLANCO, boton1)
         texto1 = fuente.render("Nivel 1", True, NEGRO)
         pantalla.blit(texto1, texto1.get_rect(center=boton1.center))

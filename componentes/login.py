@@ -77,12 +77,19 @@ def login():
                     input_text=""
                     COLOR2=BLANCO
                 elif boton.collidepoint(evento.pos):
-                    if input_text=="Nombre" or input_text=="":
-                        COLOR=GRIS
-                        print("aaa")
+                    if input_text == "Nombre" or input_text == "":
+                        COLOR = GRIS
                     else:
                         bbdd.agregar(input_text)
-                        menu.menu()
+                        menu.menu(nombre=input_text)
+            
+                #elif boton.collidepoint(evento.pos):
+                   # if input_text=="Nombre" or input_text=="":
+                     #   COLOR=GRIS
+                    #    print("aaa")
+                   # else:
+                  #      bbdd.agregar(input_text)
+                 #       menu.menu()
                     
                     
 

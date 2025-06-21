@@ -10,10 +10,10 @@ import moneda
 import manzana
 from bloque import Bloque
 from nivel import Nivel
+import bbdd
 
 
-
-def nivel2():
+def nivel2(nombre_jugador):
     pygame.init()
     pygame.mixer.init()
     sonido_moneda = pygame.mixer.Sound("sonido/moneda.wav")
@@ -95,6 +95,10 @@ def nivel2():
     SCREEN_UPDATE = pygame.USEREVENT
     pygame.time.set_timer(SCREEN_UPDATE,150)
 
+    bbdd.agregar(nombre_jugador)
+    jugador_actual = bbdd.veractual()[0]
+    id_actual = jugador_actual[0]
+    
     while running:      
         while flag:
          serpiente_obj = serpiente.Serpiente(3, 7, 2, 7, 1, 7)
@@ -103,10 +107,12 @@ def nivel2():
 
         for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    bbdd.modificar(puntuacion, id_actual)  
                     pygame.quit()
                     sys.exit()
                 if event.type == SCREEN_UPDATE:
                     serpiente_obj.caer(bloques)
+                    
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
                         serpiente_obj.direccion = Vector2(0,-1)
@@ -124,13 +130,14 @@ def nivel2():
                         serpiente_obj.direccion = Vector2(-1,0)
                         serpiente_obj.mover(bloques, forzado=True)
                         serpiente_obj.direccion = Vector2(0,0)
-
                 if serpiente_obj.limite():
+                    bbdd.modificar(puntuacion, id_actual) 
                     nivel2()
                     pygame.quit() 
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                     if boton_rect.collidepoint(event.pos):
+                        bbdd.modificar(puntuacion, id_actual)            
                         menu.menu()  
              
         manzana.Manzana.manejar_colisiones(manzanas, serpiente_obj, sonido_manzana)

@@ -12,7 +12,7 @@ from bloque import Bloque
 from nivel import Nivel
 import bbdd
 
-def nivel1():
+def nivel1(nombre_jugador):
     pygame.init()
     pygame.mixer.init()
     sonido_moneda = pygame.mixer.Sound("sonido/moneda.wav")
@@ -94,7 +94,7 @@ def nivel1():
 
     pygame.time.set_timer(SCREEN_UPDATE,150)
 
-    nombre_jugador = "Jugador1"  
+    #nombre_jugador = "Jugador1"  
     bbdd.agregar(nombre_jugador)
     jugador_actual = bbdd.veractual()[0]
     id_actual = jugador_actual[0]
