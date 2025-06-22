@@ -12,8 +12,6 @@ class Moneda:
         if not self.recogida:
             rect = pygame.Rect(self.pos.x * cell_size, self.pos.y * cell_size, cell_size, cell_size)
             screen.blit(self.moneda_img, rect)
-            # pygame.draw.ellipse(screen, self.color, rect)
-
 
     def recoger(self):
         self.recogida = True
@@ -25,5 +23,5 @@ class Moneda:
             if not moneda.recogida and serpiente.cuerpo[0] == moneda.pos:
                 moneda.recoger()
                 sonido_moneda.play()
-                puntuacion += 500  # Asignar puntos por cada moneda recogida
+                puntuacion += 500
         return puntuacion

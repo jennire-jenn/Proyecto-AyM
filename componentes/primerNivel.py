@@ -30,6 +30,7 @@ def nivel1(nombre_jugador):
 
     cesped= pygame.image.load('img/cesped.png').convert_alpha()
     tierra= pygame.image.load('img/tierra.png').convert_alpha()
+    reiniciar = pygame.image.load('img/r.png').convert_alpha()
     
     bloques = [
         Bloque(0, 10, VERDE, cesped),
@@ -70,13 +71,9 @@ def nivel1(nombre_jugador):
     nivel = Nivel(bloques, cell_size)
     monedas = [
             moneda.Moneda(11, 6, (255, 223, 0)),
-            #moneda.Moneda(5, 5, (255, 223, 0)),
-            #moneda.Moneda(3, 3, (255, 223, 0))
         ]
     manzanas = [
         manzana.Manzana(7, 7),
-        #manzana.Manzana(10, 6),
-        #manzana.Manzana(12, 8)
     ]
 
     boton_rect = pygame.Rect(10, 10, 100, 40)
@@ -86,6 +83,7 @@ def nivel1(nombre_jugador):
     texto_ancho, texto_alto = texto_boton.get_size()
     texto_x = boton_rect.x + (boton_rect.width - texto_ancho) // 2
     texto_y = boton_rect.y + (boton_rect.height - texto_alto) // 2
+    
     puntuacion = 0 
     clock = pygame.time.Clock()
     running = True
@@ -98,12 +96,16 @@ def nivel1(nombre_jugador):
     bbdd.agregar(nombre_jugador)
     jugador_actual = bbdd.veractual()[0]
     id_actual = jugador_actual[0]
-    
-   # jugadores=bbdd.veractual()
-   # jugador= jugadores[0]
-   # id=jugador[0]
-    
+    alto_boton_menu = boton_rect.height
+    ancho_boton_reiniciar = int(reiniciar.get_width() * (alto_boton_menu / reiniciar.get_height()))
+    reiniciar = pygame.transform.scale(reiniciar, (ancho_boton_reiniciar, alto_boton_menu))
 
+    boton_reiniciar_rect = pygame.Rect(
+        boton_rect.x + boton_rect.width + 10,  
+        boton_rect.y,
+        ancho_boton_reiniciar,  
+        alto_boton_menu 
+    )
     while running:
                
         while flag:
@@ -136,16 +138,33 @@ def nivel1(nombre_jugador):
                     serpiente_obj.direccion = Vector2(-1,0)
                     serpiente_obj.mover(bloques, forzado=True)
                     serpiente_obj.direccion = Vector2(0,0)
+           
             if serpiente_obj.limite():
                 bbdd.modificar(puntuacion, id_actual) 
-                nivel1()
-                pygame.quit() 
-                sys.exit()
+                print("Reiniciando nivel")
+                flag = True 
+                puntuacion = 0  
+                monedas = [
+                    moneda.Moneda(11, 6, (255, 223, 0)),
+                ]
+                manzanas = [
+                    manzana.Manzana(7, 7),
+                ]
+                continue
+           
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                 if boton_rect.collidepoint(event.pos):
                     bbdd.modificar(puntuacion, id_actual)            
                     menu.menu()  
-                    
+                if boton_reiniciar_rect.collidepoint(event.pos):  
+                    flag = True 
+                    puntuacion = 0 
+                    monedas = [
+                        moneda.Moneda(11, 6, (255, 223, 0)),
+                    ]
+                    manzanas = [
+                        manzana.Manzana(7, 7),
+                    ]           
         manzana.Manzana.manejar_colisiones(manzanas, serpiente_obj, sonido_manzana)
         puntuacion += moneda.Moneda.manejar_colisiones(monedas, serpiente_obj, sonido_moneda)
         screen.fill(CELESTE)
@@ -162,12 +181,11 @@ def nivel1(nombre_jugador):
         screen.blit(texto_boton, (texto_x, texto_y))
         moneda_obj.dibujar(screen, cell_size)
         manzana_obj.dibujar(screen)
-
         serpiente_obj.monedaSerpiente(moneda_obj)
         
         #esto no se esta usando
         serpiente_rect= serpiente_obj.dibujar(screen)
-
+        screen.blit(reiniciar, boton_reiniciar_rect.topleft)
         texto_puntuacion = fuente.render(f"Puntuación: {puntuacion}", True, NEGRO)
         screen.blit(texto_puntuacion, (screen_width - 200, 10))
         pygame.display.flip()

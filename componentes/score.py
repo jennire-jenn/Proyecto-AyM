@@ -12,8 +12,6 @@ def score():
     pantalla = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Gravity Snake")
 
-    
-
     fuente = pygame.font.SysFont(None, 30)
     fuente2 = pygame.font.SysFont(None, 50)
     
@@ -39,12 +37,7 @@ def score():
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 if boton.collidepoint(evento.pos):
                     menu.menu()
-            
-            
-                    
-
-
-    
+   
         pantalla.fill(NEGRO)
 
         
