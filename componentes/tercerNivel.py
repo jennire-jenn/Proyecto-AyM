@@ -30,7 +30,7 @@ def nivel3():
     NEGRO = (0, 0, 0)
     VERDE = (0, 200, 0)
     BLANCO = (255, 255, 255)
-    CELESTE = (135, 206, 235)
+    CELESTE = (22, 85, 172)
 
     b= pygame.image.load('img/bloque.png').convert_alpha()
     b2= pygame.image.load('img/bloque2.png').convert_alpha()
