@@ -11,13 +11,17 @@ import manzana
 from bloque import Bloque
 from nivel import Nivel
 import bbdd
-
+import meta
+import score
 
 def nivel3(nombre_jugador):
     pygame.init()
     pygame.mixer.init()
     sonido_moneda = pygame.mixer.Sound("sonido/moneda.wav")
     sonido_manzana = pygame.mixer.Sound("sonido/manzana.wav")
+    sonido_tercernivel = pygame.mixer.Sound("sonido/tercernivel.wav")
+    sonido_tercernivel.set_volume(0.2)
+    sonido_tercernivel.play(-1)
     cell_size = variables.cell_size
     screen_width, screen_height = variables.pantallaJuego
     screen = pygame.display.set_mode(variables.pantallaJuego)
@@ -114,6 +118,7 @@ def nivel3(nombre_jugador):
             manzana.Manzana(5, 6),
             manzana.Manzana(13, 15),
             ]
+    meta_obj = meta.Meta(19, 12)
 
     boton_rect = pygame.Rect(10, 10, 100, 40)
     boton_color = BLANCO
@@ -185,6 +190,7 @@ def nivel3(nombre_jugador):
             
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                     if boton_rect.collidepoint(event.pos):
+                        sonido_tercernivel.stop()
                         bbdd.modificar(puntuacion, id_actual)            
                         menu.menu()  
                     if boton_reiniciar_rect.collidepoint(event.pos):  
@@ -202,6 +208,7 @@ def nivel3(nombre_jugador):
         puntuacion += moneda.Moneda.manejar_colisiones(monedas, serpiente_obj, sonido_moneda)
         screen.fill(CELESTE)
         nivel.dibujar(screen)
+        meta_obj.dibujar(screen)
         for moneda_obj in monedas:
                     moneda_obj.dibujar(screen, cell_size)
                     serpiente_obj.dibujar(screen)
@@ -217,5 +224,12 @@ def nivel3(nombre_jugador):
         screen.blit(reiniciar, boton_reiniciar_rect.topleft)
         texto_puntuacion = fuente.render(f"Puntuación: {puntuacion}", True, NEGRO)
         screen.blit(texto_puntuacion, (screen_width - 200, 10))
+        
+        if meta_obj.colision(serpiente_obj):
+            sonido_tercernivel.stop()
+            bbdd.modificar(puntuacion, id_actual)
+            score.score()
+            return
+
         pygame.display.flip()
         clock.tick(60)

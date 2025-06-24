@@ -11,6 +11,7 @@ import manzana
 from bloque import Bloque
 from nivel import Nivel
 import bbdd
+import meta
 
 
 def nivel2(nombre_jugador):
@@ -18,6 +19,9 @@ def nivel2(nombre_jugador):
     pygame.mixer.init()
     sonido_moneda = pygame.mixer.Sound("sonido/moneda.wav")
     sonido_manzana = pygame.mixer.Sound("sonido/manzana.wav")
+    sonido_segundonivel = pygame.mixer.Sound("sonido/segundonivel.wav")
+    sonido_segundonivel.set_volume(1)
+    sonido_segundonivel.play(-1)
     cell_size = variables.cell_size
     screen_width, screen_height = variables.pantallaJuego
     screen = pygame.display.set_mode(variables.pantallaJuego)
@@ -73,6 +77,7 @@ def nivel2(nombre_jugador):
     manzanas = [
             manzana.Manzana(5, 7),
             ]
+    meta_obj = meta.Meta(12, 15)
 
     boton_rect = pygame.Rect(10, 10, 100, 40)
     boton_color = BLANCO
@@ -111,7 +116,8 @@ def nivel2(nombre_jugador):
 
         for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    bbdd.modificar(puntuacion, id_actual)  
+                    bbdd.modificar(puntuacion, id_actual)
+                    sonido_segundonivel.stop()
                     pygame.quit()
                     sys.exit()
                 if event.type == SCREEN_UPDATE:
@@ -149,6 +155,7 @@ def nivel2(nombre_jugador):
             
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                     if boton_rect.collidepoint(event.pos):
+                        sonido_segundonivel.stop()
                         bbdd.modificar(puntuacion, id_actual)            
                         menu.menu()  
                     if boton_reiniciar_rect.collidepoint(event.pos):  
@@ -164,6 +171,8 @@ def nivel2(nombre_jugador):
         puntuacion += moneda.Moneda.manejar_colisiones(monedas, serpiente_obj, sonido_moneda)
         screen.fill(CELESTE)
         nivel.dibujar(screen)
+        meta_obj.dibujar(screen)
+
         for moneda_obj in monedas:
                     moneda_obj.dibujar(screen, cell_size)
                     serpiente_obj.dibujar(screen)
