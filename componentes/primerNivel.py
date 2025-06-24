@@ -148,9 +148,10 @@ def nivel1():
             moneda_obj.dibujar(screen, cell_size)
         for manzana_obj in manzanas:
             manzana_obj.dibujar(screen)
-        
-        #esto no se esta usando
-        serpiente_rect= serpiente_obj.dibujar(screen)
+            
+        pygame.draw.rect(screen, boton_color, boton_rect)
+        screen.blit(texto_boton, (texto_x, texto_y))
+        serpiente_obj.dibujar(screen)
         screen.blit(reiniciar, boton_reiniciar_rect.topleft)
         texto_puntuacion = fuente.render(f"Puntuación: {puntuacion}", True, NEGRO)
         screen.blit(texto_puntuacion, (screen_width - 200, 10))
