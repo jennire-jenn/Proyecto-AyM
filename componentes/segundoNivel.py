@@ -12,9 +12,10 @@ from bloque import Bloque
 from nivel import Nivel
 import bbdd
 import meta
+import tercerNivel
 
 
-def nivel2(nombre_jugador):
+def nivel2(nombre_jugador, puntuacion):
     pygame.init()
     pygame.mixer.init()
     sonido_moneda = pygame.mixer.Sound("sonido/moneda.wav")
@@ -87,7 +88,6 @@ def nivel2(nombre_jugador):
     texto_x = boton_rect.x + (boton_rect.width - texto_ancho) // 2
     texto_y = boton_rect.y + (boton_rect.height - texto_alto) // 2
 
-    puntuacion = 0 
     clock = pygame.time.Clock()
     running = True
     flag= True
@@ -188,5 +188,10 @@ def nivel2(nombre_jugador):
         screen.blit(reiniciar, boton_reiniciar_rect.topleft)
         texto_puntuacion = fuente.render(f"Puntuación: {puntuacion}", True, NEGRO)
         screen.blit(texto_puntuacion, (screen_width - 200, 10))
+        if meta_obj.colision(serpiente_obj):
+            sonido_segundonivel.stop()
+            bbdd.modificar(puntuacion, id_actual)
+            tercerNivel.nivel3(nombre_jugador, puntuacion)
+            return
         pygame.display.flip()
         clock.tick(60)

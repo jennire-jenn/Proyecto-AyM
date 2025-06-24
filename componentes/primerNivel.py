@@ -135,7 +135,9 @@ def nivel1(nombre_jugador):
         if meta_obj.colision(serpiente_obj):
             bbdd.modificar(puntuacion, id_actual)
             sonido_primernivel.stop()
-            menu.menu(nombre_jugador)
+            import segundoNivel
+            segundoNivel.nivel2(nombre_jugador, puntuacion)
+            return
 
         screen.fill(CELESTE)
         nivel.dibujar(screen)

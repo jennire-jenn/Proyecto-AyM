@@ -14,7 +14,7 @@ import bbdd
 import meta
 import score
 
-def nivel3(nombre_jugador):
+def nivel3(nombre_jugador, puntuacion):
     pygame.init()
     pygame.mixer.init()
     sonido_moneda = pygame.mixer.Sound("sonido/moneda.wav")

@@ -87,7 +87,6 @@ def login():
     clock = pygame.time.Clock()
     running = True
 
-    input_text = "Nombre"
     while running:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -103,6 +102,7 @@ def login():
                     if input_text == "Nombre" or input_text == "":
                         COLOR = GRIS
                     else:
+                        sonido_menu.stop()
                         bbdd.agregar(input_text)
                         menu.menu(nombre=input_text)
 
