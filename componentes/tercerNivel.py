@@ -14,7 +14,7 @@ import bbdd
 import meta
 import score
 
-def nivel3(nombre_jugador, puntuacion):
+def nivel3():
     pygame.init()
     pygame.mixer.init()
     sonido_moneda = pygame.mixer.Sound("sonido/moneda.wav")
@@ -134,9 +134,10 @@ def nivel3(nombre_jugador, puntuacion):
     flag= True
     SCREEN_UPDATE = pygame.USEREVENT
     pygame.time.set_timer(SCREEN_UPDATE,150)
-    bbdd.agregar(nombre_jugador)
+    
     jugador_actual = bbdd.veractual()[0]
     id_actual = jugador_actual[0]
+    puntuacion_actual= jugador_actual[2]
     alto_boton_menu = boton_rect.height
     ancho_boton_reiniciar = int(reiniciar.get_width() * (alto_boton_menu / reiniciar.get_height()))
     reiniciar = pygame.transform.scale(reiniciar, (ancho_boton_reiniciar, alto_boton_menu))
@@ -190,8 +191,7 @@ def nivel3(nombre_jugador, puntuacion):
             
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                     if boton_rect.collidepoint(event.pos):
-                        sonido_tercernivel.stop()
-                        bbdd.modificar(puntuacion, id_actual)            
+                        sonido_tercernivel.stop()          
                         menu.menu()  
                     if boton_reiniciar_rect.collidepoint(event.pos):  
                         flag = True 
@@ -226,6 +226,7 @@ def nivel3(nombre_jugador, puntuacion):
         screen.blit(texto_puntuacion, (screen_width - 200, 10))
         
         if meta_obj.colision(serpiente_obj):
+            puntuacion = puntuacion + puntuacion_actual
             sonido_tercernivel.stop()
             bbdd.modificar(puntuacion, id_actual)
             score.score()

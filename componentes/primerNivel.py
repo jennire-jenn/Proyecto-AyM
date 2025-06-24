@@ -12,7 +12,7 @@ from nivel import Nivel
 import bbdd
 import meta
 
-def nivel1(nombre_jugador):
+def nivel1():
     pygame.init()
     pygame.mixer.init()
     sonido_moneda = pygame.mixer.Sound("sonido/moneda.wav")
@@ -70,10 +70,11 @@ def nivel1(nombre_jugador):
     reiniciar = pygame.transform.scale(reiniciar, (ancho_reiniciar, alto_boton))
     boton_reiniciar_rect = pygame.Rect(boton_rect.x + boton_rect.width + 10, boton_rect.y, ancho_reiniciar, alto_boton)
 
-    puntuacion = 0
-    bbdd.agregar(nombre_jugador)
+    
     jugador_actual = bbdd.veractual()[0]
     id_actual = jugador_actual[0]
+    puntuacion_actual= jugador_actual[2]
+    puntuacion = 0
 
     flag = True
 
@@ -112,7 +113,6 @@ def nivel1(nombre_jugador):
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if boton_rect.collidepoint(event.pos):
-                    bbdd.modificar(puntuacion, id_actual)
                     sonido_primernivel.stop()
                     menu.menu()
                 if boton_reiniciar_rect.collidepoint(event.pos):
@@ -133,10 +133,11 @@ def nivel1(nombre_jugador):
         puntuacion += moneda.Moneda.manejar_colisiones(monedas, serpiente_obj, sonido_moneda)
 
         if meta_obj.colision(serpiente_obj):
+            puntuacion = puntuacion + puntuacion_actual
             bbdd.modificar(puntuacion, id_actual)
             sonido_primernivel.stop()
             import segundoNivel
-            segundoNivel.nivel2(nombre_jugador, puntuacion)
+            segundoNivel.nivel2()
             return
 
         screen.fill(CELESTE)

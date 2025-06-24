@@ -50,11 +50,11 @@ def menu(nombre=None):
                 sys.exit()
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 if boton1.collidepoint(evento.pos):
-                    primerNivel.nivel1(nombre)
+                    primerNivel.nivel1()
                 elif boton2.collidepoint(evento.pos):
-                    segundoNivel.nivel2(nombre)
+                    segundoNivel.nivel2()
                 elif boton3.collidepoint(evento.pos):
-                    tercerNivel.nivel3(nombre)
+                    tercerNivel.nivel3()
                 elif boton4.collidepoint(evento.pos):
                     score.score()
             
